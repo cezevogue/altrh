@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Form\CategoryType;
 use App\Form\ProductType;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,9 +86,9 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('listProduct');
         endif;
 
-        return $this->render('home/updateProduct.html.twig',[
-            'form'=>$form->createView(),
-            'product'=>$product
+        return $this->render('home/updateProduct.html.twig', [
+            'form' => $form->createView(),
+            'product' => $product
         ]);
     }
 
@@ -95,10 +98,10 @@ class HomeController extends AbstractController
     public function listProduct(ProductRepository $repository)
     {
 
-        $products=$repository->findAll();
+        $products = $repository->findAll();
 
-        return $this->render('home/listProduct.html.twig',[
-            'products'=>$products
+        return $this->render('home/listProduct.html.twig', [
+            'products' => $products
         ]);
     }
 
@@ -117,5 +120,65 @@ class HomeController extends AbstractController
 
     }
 
+    /**
+     * @Route("/updateCategory/{id}", name="updateCategory")
+     * @Route("/Category", name="category")
+     *
+     */
+    public function category(Request $request, EntityManagerInterface $manager, CategoryRepository $repository, $id = null)
+    {
+        $categories = $repository->findAll();
+
+        if ($id !== null):
+            $category=$repository->find($id);
+        else:
+
+          $category=new Category();
+        endif;
+
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+        //dd($form->getErrors());
+        if ($form->isSubmitted() && $form->isValid()):
+
+
+
+            $manager->persist($category);
+            $manager->flush();
+            if ($id !== null):
+
+            $this->addFlash('success', 'Catégorie modifiée!!!');
+            else:
+
+                $this->addFlash('success', 'Catégorie ajoutée!!!');
+
+            endif;
+            return $this->redirectToRoute('category');
+        endif;
+
+        return $this->render('home/category.html.twig', [
+            'form' => $form->createView(),
+            'categories' => $categories
+        ]);
+
+
+
+
+    }
+
+    /**
+     * @Route("/deleteCategory/{id}", name="deleteCategory")
+     */
+    public function deleteCategory(Category $category, EntityManagerInterface $manager)
+    {
+
+        $manager->remove($category);
+        $manager->flush();
+
+        $this->addFlash('success', 'catégorie supprimée!!!');
+        return $this->redirectToRoute('category');
+
+    }
 
 }

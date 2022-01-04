@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+   {{ form(form) }}
+
+    <table class="table table-dark mt-5">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for category in categories %}
+
+
+            <tr>
+                <th scope="row">{{ category.id   }}</th>
+                <td>{{ category.title }}</td>
+                <td>
+                    <a href="{{ path('updateCategory', { id: category.id }) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path('deleteCategory', {id: category.id }) }}" onclick="return confirm('Etes-vous sûr?')" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+
+{% endblock %}
