@@ -19,10 +19,14 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(): Response
+    public function home(ProductRepository $repository): Response
     {
+        $posts=$repository->findBy([], ['createdAt'=>'DESC']);
+
+
         return $this->render('home/home.html.twig', [
             'controller_name' => 'HomeController',
+            'posts'=>$posts
         ]);
     }
 
@@ -44,6 +48,8 @@ class HomeController extends AbstractController
 
             $pictureName = date('YmdHis') . uniqid() . $picture->getClientOriginalName();
             $picture->move($this->getParameter('uploads'), $pictureName);
+            $product->setUser($this->getUser());
+            $product->setCreatedAt(new \DateTime());
 
             $product->setPicture($pictureName);
             $manager->persist($product);

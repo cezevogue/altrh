@@ -10,6 +10,9 @@
             <th scope="col">#</th>
             <th scope="col">Nom</th>
             <th scope="col">Prix</th>
+            <th scope="col">Categorie</th>
+            <th scope="col">posté par</th>
+            <th scope="col">date de post</th>
             <th scope="col">Photo</th>
             <th scope="col">Actions</th>
         </tr>
@@ -23,6 +26,9 @@
             <th scope="row">{{ product.id   }}</th>
             <td>{{ product.title }}</td>
             <td>{{ product.price }} €</td>
+            <td>{{ product.category.title }} </td>
+            <td>{{ product.user.firstname }} </td>
+            <td>{{ product.createdAt| date('d-m-Y H:i') }} </td>
             <td><img src="{{ asset('uploads/') }}{{ product.picture }}" width="50" alt=""></td>
             <td>
                 <a href="{{ path('updateProduct', { id: product.id }) }}" class="btn btn-warning">Modifier</a>

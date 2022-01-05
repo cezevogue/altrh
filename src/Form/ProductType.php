@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,6 +22,10 @@ class ProductType extends AbstractType
 
         $builder
             ->add('title',TextType::class)
+            ->add('category',EntityType::class,[
+                "class"=>Category::class,
+                "choice_label"=>'title'
+            ])
             ->add('price', NumberType::class)
             ->add('picture', FileType::class)
             ->add('Enregistrer', SubmitType::class)
@@ -28,6 +34,10 @@ class ProductType extends AbstractType
         elseif ($options['update']==true):
         $builder
             ->add('title',TextType::class)
+            ->add('category',EntityType::class,[
+                "class"=>Category::class,
+                "choice_label"=>'title'
+            ])
             ->add('price', NumberType::class)
             ->add('pictureUpdate', FileType::class)
             ->add('Enregistrer', SubmitType::class)

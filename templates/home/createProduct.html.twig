@@ -5,6 +5,7 @@
     {{ form_start(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.price) }}
+    {{ form_row(form.category) }}
     {{ form_row(form.picture ,{ 'attr':{ 'onChange': 'loadFile(event)'} }   ) }}
     <div class="text-center">
         <img id="image" style="width: 300px">

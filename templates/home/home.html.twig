@@ -2,16 +2,19 @@
 
 {% block body %}
 
+    {% for post in posts %}
+
+
     <div class="card" style="width: 18rem;">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
-            <h4 class="card-title">Card title</h4>
-            <h5 class="card-title">Prix euros</h5>
+            <h4 class="card-title">{{ post.title }}</h4>
+            <h5 class="card-title">{{ post.createdAt | date('d/m/Y H:i') }}</h5>
             <a href="#" class="btn btn-primary">Ajouter au panier</a>
         </div>
     </div>
 
-
+{% endfor %}
 
 {% endblock %}
 
